@@ -29,3 +29,5 @@ bfg-*.jar
 *BFG*.report
 *.bfg-report
 .gitattributes
+bfg-*.jar
+*.bfg-report
