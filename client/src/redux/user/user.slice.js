@@ -1,21 +1,21 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  isLoggedIN: false,
-  user: null, // always start as null
+  isLoggedIn: false,
+  user: null,
 };
 
-export const userSlice = createSlice({
+const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
     setUser: (state, action) => {
-      state.isLoggedIN = true;
+      state.isLoggedIn = true;
       state.user = action.payload;
     },
     removeUser: (state) => {
-      state.isLoggedIN = false;
-      state.user = null; // reset to null consistently
+      state.isLoggedIn = false;
+      state.user = null;
     },
   },
 });
