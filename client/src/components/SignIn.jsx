@@ -19,6 +19,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { showToast } from "@/helpers/showToast";
 import GoogleLogin from "./GoogleLogin";
 import StarsBackgroundWrapper from "./StarsBackground";
+import { useDispatch } from "react-redux";
+import { setUser } from "@/redux/user/user.slice";
 
 //  Validation Schema
 const formSchema = z.object({
@@ -30,6 +32,7 @@ const formSchema = z.object({
 const SignIn = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   //  Initialize react-hook-form
   const form = useForm({
@@ -55,7 +58,7 @@ const SignIn = () => {
       if (!response.ok) {
         return showToast("error", data.message || "Login failed");
       }
-
+      dispatch(setUser(data.user))
       localStorage.setItem("token", data.token);
       showToast("success", data.message || "Login successful!");
 
