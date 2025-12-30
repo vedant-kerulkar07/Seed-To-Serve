@@ -33,7 +33,7 @@ import { useNavigate } from "react-router-dom";
 // ------------------ ZOD SCHEMA ------------------ //
 
 const categorySchema = z.object({
-  categoryName: z.string().min(1, "Please select category"),
+  categoryId: z.string().min(1, "Please select category"),
   name: z.string().min(2, "Product name must be at least 2 characters"),
   description: z.string().optional(),
   price: z.coerce.number().min(1, "Price must be greater than 0"),
@@ -47,7 +47,7 @@ const AddProduct = () => {
   const [products, setProducts] = useState([]);
   const [categoriesList, setCategoriesList] = useState([]);
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate() 
+  const navigate = useNavigate()
   const [editIndex, setEditIndex] = useState(null);
   const [editName, setEditName] = useState("");
   const [editDescription, setEditDescription] = useState("");
@@ -57,7 +57,7 @@ const AddProduct = () => {
   const form = useForm({
     resolver: zodResolver(categorySchema),
     defaultValues: {
-      categoryName: "",
+      categoryId: "",
       name: "",
       description: "",
       price: "",
@@ -105,46 +105,46 @@ const AddProduct = () => {
 
   // ------------------ ADD PRODUCT ------------------ //
   const onSubmit = async (data) => {
-  setLoading(true);
-  try {
-    const token = localStorage.getItem("token");
+    setLoading(true);
+    try {
+      const token = localStorage.getItem("token");
 
-    const formData = new FormData();
+      const formData = new FormData();
 
-    const productJson = JSON.stringify({
-      categoryName: data.categoryName,
-      name: data.name,
-      description: data.description || "",
-      price: data.price,
-      stock: data.stock,
-    });
+      const productJson = JSON.stringify({
+        categoryId: data.categoryId,
+        name: data.name,
+        description: data.description || "",
+        price: data.price,
+        stock: data.stock,
+      });
 
-    formData.append("productDto", productJson); // <-- IMPORTANT
-    if (data.image) formData.append("image", data.image);
+      formData.append("productDto", productJson); // <-- IMPORTANT
+      if (data.image) formData.append("image", data.image);
 
-    const res = await fetch(
-      "http://localhost:8080/api/farmer/products/add/product",
-      {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`, 
-        },
-        body: formData,
-      }
-    );
-    console.log(res)
-    const newProduct = await res.json();
-    setProducts((prev) => [...prev, newProduct]);
-    console.log(newProduct)
-    form.reset();
-    showToast("success", "Product added successfully");
+      const res = await fetch(
+        "http://localhost:8080/api/farmer/products/add/product",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          body: formData,
+        }
+      );
+      console.log(res)
+      const newProduct = await res.json();
+      setProducts((prev) => [...prev, newProduct]);
+      console.log(newProduct)
+      form.reset();
+      showToast("success", "Product added successfully");
 
-  } catch (err) {
-    showToast("error", "Failed to add product");
-  } finally {
-    setLoading(false);
-  }
-};
+    } catch (err) {
+      showToast("error", "Failed to add product");
+    } finally {
+      setLoading(false);
+    }
+  };
 
 
   // ------------------ DELETE PRODUCT ------------------ //
@@ -226,14 +226,14 @@ const AddProduct = () => {
     <div className="min-h-screen bg-gray-50 p-8">
       <div className="max-w-6xl mx-auto space-y-8">
 
-       <Button
-                variant="outline"
-                className="flex items-center gap-2 mb-4"
-                onClick={() => navigate("/farmer-popup")}
-              >
-                <FiArrowLeft size={18} /> Back
-              </Button>
-      
+        <Button
+          variant="outline"
+          className="flex items-center gap-2 mb-4"
+          onClick={() => navigate("/farmer-popup")}
+        >
+          <FiArrowLeft size={18} /> Back
+        </Button>
+
         {/* ADD PRODUCT FORM */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
@@ -251,7 +251,7 @@ const AddProduct = () => {
               {/* CATEGORY SELECT (shadcn) */}
               <FormField
                 control={form.control}
-                name="categoryName"
+                name="categoryId"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Category</FormLabel>
@@ -262,7 +262,7 @@ const AddProduct = () => {
                         </SelectTrigger>
                         <SelectContent>
                           {categoriesList.map((cat) => (
-                            <SelectItem key={cat.name} value={cat.name}>
+                            <SelectItem key={cat._id} value={cat._id}>
                               {cat.name}
                             </SelectItem>
                           ))}

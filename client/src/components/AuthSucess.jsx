@@ -5,7 +5,6 @@ import { showToast } from "@/helpers/showToast";
 import { useDispatch } from "react-redux";
 import { setUser } from "@/redux/user/user.slice";
 
-
 const AuthSuccess = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -36,7 +35,7 @@ const AuthSuccess = () => {
 
         showToast("success", "Login successful!");
 
-        // 🔥 FIXED PART
+    
         if (data.registrationType === "FARMER") {
           navigate("/farmer");
         } else {

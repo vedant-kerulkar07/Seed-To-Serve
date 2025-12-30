@@ -13,22 +13,21 @@ import OnlyFarmerAllowed from './components/OnlyFramerAllowed'
 
 const App = () => {
   return (
-    <Routes>
-      <Route path="/signup" element={<SignUp />} />
-      <Route path="/login" element={<SignIn />} />
-      <Route path="/auth-success" element={<AuthSuccess />} />
+      <Routes>
+        <Route path="/signup" element={<SignUp />} />
+        <Route path="/login" element={<SignIn />} />
+        <Route path="/auth-success" element={<AuthSuccess />} />
 
-      <Route path="/" element={<MainLayout />}>
-        <Route index element={<Dashboard />} />
-      </Route>
+        <Route path="/" element={<MainLayout />}>
+          <Route index element={<Dashboard />} />
+        </Route>
 
-      <Route element={<OnlyFarmerAllowed />}>
-        <Route path="/farmer-popup" element={<FarmerPopup />} />
-        <Route path="/addcategory" element={<AddCategory />} />
-        <Route path="/addproducts" element={<AddProduct />} />
-      </Route>
-    </Routes>
-
+        <Route element={<OnlyFarmerAllowed />}>
+          <Route path="/farmer-popup" element={<FarmerPopup />} />
+          <Route path="/addcategory" element={<AddCategory />} />
+          <Route path="/addproducts" element={<AddProduct />} />
+        </Route>
+      </Routes>
   )
 }
 

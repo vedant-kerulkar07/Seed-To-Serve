@@ -45,36 +45,45 @@ const SignIn = () => {
 
   //  Submit Handler with API call
   const onSubmit = async (values) => {
-    setLoading(true);
-    try {
-      const response = await fetch("http://localhost:8080/api/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(values),
-      });
+  setLoading(true);
+  try {
+    const response = await fetch("http://localhost:8080/api/auth/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(values),
+    });
 
-      const data = await response.json();
+    const result = await response.json();
+    console.log("LOGIN RESPONSE:", result);
 
-      if (!response.ok) {
-        return showToast("error", data.message || "Login failed");
-      }
-      dispatch(setUser(data.user))
-      localStorage.setItem("token", data.token);
-      showToast("success", data.message || "Login successful!");
-
-      if (data.role === "BUYER") {
-        navigate("/buyer-popup");
-      } else {
-        navigate("/farmer-popup");
-      }
-
-
-    } catch (err) {
-      showToast("error", err.message || "Server error");
-    } finally {
-      setLoading(false);
+    if (!response.ok || !result.success) {
+      return showToast("error", result.message || "Login failed");
     }
-  };
+
+    const { token, username, role } = result.data;
+
+    dispatch(
+      setUser({
+        user: { username },
+        role,
+        token,
+      })
+    );
+    localStorage.setItem("token", token);
+
+    showToast("success", result.message || "Login successful!");
+
+    if (role === "FARMER") {
+      navigate("/farmer-popup");
+    } else {
+      navigate("/buyer-popup");
+    }
+  } catch (err) {
+    showToast("error", err.message || "Server error");
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <div>
@@ -170,7 +179,7 @@ const SignIn = () => {
           </div>
 
           <p className="text-sm text-white mt-6 text-center">
-            Already have an account?{" "}
+            Create a new account?{" "}
             <Link
               to="/signup"
               className="text-[#2563eb] font-medium hover:underline"

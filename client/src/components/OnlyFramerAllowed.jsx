@@ -3,14 +3,20 @@ import { useSelector } from 'react-redux'
 import { Navigate, Outlet } from 'react-router-dom'
 
 const OnlyFarmerAllowed = () => {
-  const user = useSelector(state => state.user)
-  if(user && user.isLoggedIn && user.user.role === 'farmer') {
+  const { isLoggedIn, role } = useSelector(state => state.user)
+  if (!isLoggedIn || !role) {
     return (
-      <Outlet />
+      <div>Loading....</div>
     )
-  }else{
-    return <Navigate to="/login" replace />
   }
-}
 
+  if (role !== "FARMER") {
+    return (
+      <Navigate to="/login" replace />
+    )
+  }
+  return (
+    <Outlet />
+  )
+}
 export default OnlyFarmerAllowed
