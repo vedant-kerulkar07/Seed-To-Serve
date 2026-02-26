@@ -1,75 +1,66 @@
-import React, { useState } from "react";
-import { FaBars, FaSearch } from "react-icons/fa";
-import { IoMdNotificationsOutline } from "react-icons/io";
-import { useNavigate } from "react-router-dom";
-import logo from "@/assets/images/logo.png";
+import { motion } from "framer-motion";
+import { ShoppingCart, User, Leaf } from "lucide-react";
 
 const UserTopbar = () => {
-  const navigate = useNavigate();
-  const [showSearch, setShowSearch] = useState(false);
-
   return (
-    <header className="w-full px-4 py-3">
-      <div className="flex items-center justify-between bg-[#3E5F62] rounded-full px-4 py-2 shadow-lg">
+    <motion.div
+      initial={{ y: -80, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      className="fixed top-4 inset-x-0 flex justify-center z-50 px-4"
+    >
+      <div
+        className="w-full max-w-7xl flex justify-between items-center px-6 py-3 
+        rounded-2xl backdrop-blur-lg bg-[#1a2f33]/70 border border-white/10 
+        shadow-[0_8px_30px_rgba(0,0,0,0.3)]"
+      >
 
-        {/* LEFT */}
-        <div className="flex items-center gap-3">
-          <FaBars className="text-white text-lg cursor-pointer md:hidden" />
-
-          <div
-            onClick={() => navigate("/dashboard")}
-            className="flex items-center gap-2 cursor-pointer"
-          >
-            <img src={logo} alt="Logo" className="w-8 h-8 rounded-full" />
-            <span className="hidden md:block text-white font-semibold">
-              SeedToServe
-            </span>
+        {/* LOGO */}
+        <div className="flex items-center gap-2">
+          <div className="bg-gradient-to-r from-green-400 to-emerald-600 p-2 rounded-full">
+            <Leaf size={18} />
           </div>
+          <h1 className="text-lg font-semibold text-green-300 tracking-wide">
+            SeedToServe
+          </h1>
         </div>
 
-        <div className="hidden md:block flex-1 mx-4">
-          <input
-            type="text"
-            placeholder="Search for Grocery, Stores, Vegetable"
-            className="w-full px-4 py-2 rounded-full text-sm outline-none"
-          />
+        {/* NAV LINKS */}
+        <div className="hidden md:flex gap-8 text-sm font-medium text-gray-300">
+          <span className="hover:text-green-400 cursor-pointer transition">
+            Home
+          </span>
+          <span className="hover:text-green-400 cursor-pointer transition">
+            Products
+          </span>
+          <span className="hover:text-green-400 cursor-pointer transition">
+            Orders
+          </span>
         </div>
 
-        {showSearch && (
-          <div className="md:hidden mx-2">
-            <input
-              type="text"
-              autoFocus
-              placeholder="Search..."
-              className="w-36 px-3 py-1.5 rounded-full text-sm outline-none"
-            />
-          </div>
-        )}
-
+        {/* ACTION ICONS */}
         <div className="flex items-center gap-4">
-          
-          {!showSearch && (
-            <span className="hidden md:flex text-white text-sm font-medium">
-              ⚡ Order now and get it within{" "}
-              <span className="text-yellow-300">15 min!</span>
-            </span>
-          )}
 
-          <FaSearch
-            className="md:hidden text-white text-lg cursor-pointer"
-            onClick={() => setShowSearch(!showSearch)}
-          />
+          {/* Cart */}
+          <motion.div
+            whileHover={{ scale: 1.15 }}
+            whileTap={{ scale: 0.9 }}
+            className="p-2 rounded-full bg-[#243f44] bg-green-600 transition cursor-pointer"
+          >
+            <ShoppingCart size={18} />
+          </motion.div>
 
-          <IoMdNotificationsOutline className="text-white text-xl cursor-pointer" />
+          {/* Profile */}
+          <motion.div
+            whileHover={{ scale: 1.15 }}
+            whileTap={{ scale: 0.9 }}
+            className="p-2 rounded-full bg-[#243f44] bg-emerald-500 transition cursor-pointer"
+          >
+            <User size={18} />
+          </motion.div>
 
-          <img
-            src="https://i.pravatar.cc/40"
-            alt="User"
-            className="w-8 h-8 rounded-full border-2 border-white"
-          />
         </div>
       </div>
-    </header>
+    </motion.div>
   );
 };
 

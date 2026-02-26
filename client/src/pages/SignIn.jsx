@@ -76,7 +76,7 @@ const SignIn = () => {
     if (role === "FARMER") {
       navigate("/farmer-popup");
     } else {
-      navigate("//dashboard");
+      navigate("/dashboard");
     }
   } catch (err) {
     showToast("error", err.message || "Server error");
