@@ -1,42 +1,47 @@
 import { motion } from "framer-motion";
 import { Truck, ShieldCheck, Leaf } from "lucide-react";
 import { useEffect, useState } from "react";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const UserDashboard = () => {
-   const Aa = "https://res.cloudinary.com/dfpgxonqe/image/upload/v1772088432/Aa_jzs8lw.avif";
-   const fruits = "https://res.cloudinary.com/dfpgxonqe/image/upload/v1772088626/Fruits_jhlu2y.avif"
-   const vegetables = "https://res.cloudinary.com/dfpgxonqe/image/upload/v1772088713/Vegetables_m7ab3d.avif"
-  const Grains = "https://res.cloudinary.com/dfpgxonqe/image/upload/v1772088705/Grains_oar20c.avif"
-
+  const Aa =
+    "https://res.cloudinary.com/dfpgxonqe/image/upload/v1772088432/Aa_jzs8lw.avif";
+  const fruits =
+    "https://res.cloudinary.com/dfpgxonqe/image/upload/v1772088626/Fruits_jhlu2y.avif";
+  const vegetables =
+    "https://res.cloudinary.com/dfpgxonqe/image/upload/v1772088713/Vegetables_m7ab3d.avif";
+  const Grains =
+    "https://res.cloudinary.com/dfpgxonqe/image/upload/v1772088705/Grains_oar20c.avif";
 
   const [products, setProducts] = useState([]);
-
+const navigate = useNavigate();
   // ✅ FETCH API
- useEffect(() => {
-  console.log("UserDashboard mounted ✅");
+  useEffect(() => {
+    console.log("UserDashboard mounted ✅");
 
-  const fetchProducts = async () => {
-    console.log("Fetching products...");
+    const fetchProducts = async () => {
+      console.log("Fetching products...");
 
-    try {
-      const res = await fetch("http://localhost:8080/api/farmer/products/show/products");
+      try {
+        const res = await fetch(
+          "http://localhost:8080/api/farmer/products/show/products",
+        );
 
-      console.log("Response received:", res);
+        console.log("Response received:", res);
 
-      const data = await res.json();
-      console.log("Data:", data);
+        const data = await res.json();
+        console.log("Data:", data);
 
-      setProducts(data);
-    } catch (err) {
-      console.error("Error fetching products:", err);
-    }
-  };
+        setProducts(data);
+      } catch (err) {
+        console.error("Error fetching products:", err);
+      }
+    };
 
-  fetchProducts();
-}, []);
+    fetchProducts();
+  }, []);
   return (
     <div className="bg-[#0B1E20] text-gray-200 min-h-screen ">
-
       {/* ================= HERO ================= */}
       <section className="relative w-full min-h-[90vh] flex items-center">
         <img
@@ -86,15 +91,29 @@ const UserDashboard = () => {
       {/* ================= FEATURES ================= */}
       <section className="grid md:grid-cols-3 gap-8 py-16 text-center bg-[#10292C]">
         {[
-          { icon: <Truck />, title: "Free Delivery", desc: "On orders above ₹500" },
-          { icon: <ShieldCheck />, title: "Quality Assured", desc: "100% fresh guarantee" },
-          { icon: <Leaf />, title: "Organic & Pure", desc: "Directly from farms" },
+          {
+            icon: <Truck />,
+            title: "Free Delivery",
+            desc: "On orders above ₹500",
+          },
+          {
+            icon: <ShieldCheck />,
+            title: "Quality Assured",
+            desc: "100% fresh guarantee",
+          },
+          {
+            icon: <Leaf />,
+            title: "Organic & Pure",
+            desc: "Directly from farms",
+          },
         ].map((item, i) => (
           <motion.div key={i} whileHover={{ scale: 1.08 }}>
             <div className="bg-[#1E3A3D] p-5 rounded-full inline-block mb-4">
               {item.icon}
             </div>
-            <h3 className="text-xl font-semibold text-green-300">{item.title}</h3>
+            <h3 className="text-xl font-semibold text-green-300">
+              {item.title}
+            </h3>
             <p className="text-gray-400">{item.desc}</p>
           </motion.div>
         ))}
@@ -116,10 +135,15 @@ const UserDashboard = () => {
             { name: "Fruits", img: fruits },
             { name: "Grains", img: Grains },
           ].map((cat, i) => (
-            <motion.div key={i} whileHover={{ scale: 1.05 }}
+            <motion.div
+              key={i}
+              whileHover={{ scale: 1.05 }}
               className="relative rounded-xl overflow-hidden cursor-pointer"
             >
-              <img src={cat.img} className="w-full h-64 object-cover opacity-70" />
+              <img
+                src={cat.img}
+                className="w-full h-64 object-cover opacity-70"
+              />
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
 
               <div className="absolute bottom-5 left-5">
@@ -156,17 +180,15 @@ const UserDashboard = () => {
             >
               <div className="relative">
                 <img
-                  src={item.imageBase64 || item.imageBase64}
+                  src={item.imageBase64}
                   className="h-56 w-full object-cover"
+                  alt={item.name}
                 />
-                {/* <span className="absolute top-3 left-3 bg-[#E07A5F] text-xs px-3 py-1 rounded-full">
-                  SALE
-                </span> */}
               </div>
 
               <div className="p-4">
                 <p className="text-sm text-gray-400 uppercase">
-                  {item.category || "Vegetables"}
+                  {item.categoryName || "Vegetables"}
                 </p>
 
                 <h3 className="text-xl font-semibold">{item.name}</h3>
@@ -180,7 +202,7 @@ const UserDashboard = () => {
                     ₹{item.price}/kg
                   </span>
 
-                  <button className="bg-green-600 px-4 py-1 rounded-full text-sm hover:bg-green-700">
+                  <button className="bg-green-600 px-4 py-1 rounded-full text-sm hover:bg-green-700 transition">
                     Add
                   </button>
                 </div>
@@ -188,8 +210,44 @@ const UserDashboard = () => {
             </motion.div>
           ))}
         </div>
-      </section>
 
+        <motion.div
+          className="flex justify-center mt-14"
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+          <motion.button
+            onClick={() => navigate("/dashboard/products")}
+            whileHover={{ scale: 1.08 }}
+            whileTap={{ scale: 0.95 }}
+            animate={{ y: [0, -6, 0] }}
+            transition={{
+              y: {
+                duration: 2,
+                repeat: Infinity,
+                ease: "easeInOut",
+              },
+            }}
+            className="group relative px-10 py-4 
+                 bg-gradient-to-r from-green-500 via-emerald-500 to-green-600 
+                 text-white font-semibold text-lg 
+                 rounded-full shadow-xl 
+                 overflow-hidden"
+          >
+            <span className="relative z-10 flex items-center gap-2">
+              Explore Complete Collection
+              <motion.span
+                initial={{ x: 0 }}
+                whileHover={{ x: 6 }}
+                transition={{ type: "spring", stiffness: 300 }}
+              >
+                →
+              </motion.span>
+            </span>
+          </motion.button>
+        </motion.div>
+      </section>
     </div>
   );
 };

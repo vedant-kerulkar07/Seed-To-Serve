@@ -1,7 +1,9 @@
 import { motion } from "framer-motion";
 import { ShoppingCart, User, Leaf } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const UserTopbar = () => {
+  const navigate = useNavigate();
   return (
     <motion.div
       initial={{ y: -80, opacity: 0 }}
@@ -26,10 +28,12 @@ const UserTopbar = () => {
 
         {/* NAV LINKS */}
         <div className="hidden md:flex gap-8 text-sm font-medium text-gray-300">
-          <span className="hover:text-green-400 cursor-pointer transition">
+          <span onClick={() => navigate("/dashboard")} 
+          className="hover:text-green-400 cursor-pointer transition">
             Home
           </span>
-          <span className="hover:text-green-400 cursor-pointer transition">
+          <span onClick={() => navigate("/dashboard/products")}
+          className="hover:text-green-400 cursor-pointer transition">
             Products
           </span>
           <span className="hover:text-green-400 cursor-pointer transition">

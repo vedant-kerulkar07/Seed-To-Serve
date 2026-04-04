@@ -11,6 +11,8 @@ import SignUp from './pages/SignUp'
 import SignIn from './pages/SignIn'
 import UserLayout from './layouts/UserLayout'
 import UserDashboard from './pages/UserDashboard'
+import ProductPage from './pages/Products'
+import ProductDetails from './pages/ProductDetails'
 
 
 const App = () => {
@@ -32,6 +34,8 @@ const App = () => {
 
         <Route path="/dashboard" element={<UserLayout />}>
             <Route index element={<UserDashboard />} />
+            <Route path='products' element={<ProductPage />} />
+            <Route path="product/:id" element={<ProductDetails />} />
         </Route>
       </Routes>
   )

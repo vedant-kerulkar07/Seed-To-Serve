@@ -26,8 +26,7 @@ import { setUser } from "@/redux/user/user.slice";
 const formSchema = z.object({
   email: z.string().email(),
   password: z.string().min(6, "Password is required"),
-})
-
+});
 
 const SignIn = () => {
   const [loading, setLoading] = useState(false);
@@ -45,45 +44,46 @@ const SignIn = () => {
 
   //  Submit Handler with API call
   const onSubmit = async (values) => {
-  setLoading(true);
-  try {
-    const response = await fetch("http://localhost:8080/api/auth/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(values),
-    });
+    setLoading(true);
+    try {
+      const response = await fetch("http://localhost:8080/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(values),
+      });
 
-    const result = await response.json();
-    console.log("LOGIN RESPONSE:", result);
+      const result = await response.json();
+      console.log("LOGIN RESPONSE:", result);
+      console.log(response);
 
-    if (!response.ok || !result.success) {
-      return showToast("error", result.message || "Login failed");
+      if (!response.ok) {
+        return showToast("error", "Login failed");
+      }
+
+      const { token, username, role } = result;
+
+      dispatch(
+        setUser({
+          user: { username },
+          role,
+          token,
+        }),
+      );
+      localStorage.setItem("token", token);
+
+      showToast("success", result.message || "Login successful!");
+
+      if (role === "FARMER") {
+        navigate("/farmer-popup");
+      } else {
+        navigate("/dashboard");
+      }
+    } catch (err) {
+      showToast("error", err.message || "Server error");
+    } finally {
+      setLoading(false);
     }
-
-    const { token, username, role } = result.data;
-
-    dispatch(
-      setUser({
-        user: { username },
-        role,
-        token,
-      })
-    );
-    localStorage.setItem("token", token);
-
-    showToast("success", result.message || "Login successful!");
-
-    if (role === "FARMER") {
-      navigate("/farmer-popup");
-    } else {
-      navigate("/dashboard");
-    }
-  } catch (err) {
-    showToast("error", err.message || "Server error");
-  } finally {
-    setLoading(false);
-  }
-};
+  };
 
   return (
     <div>
@@ -158,7 +158,10 @@ const SignIn = () => {
                 )}
               />
               {/* Submit Button */}
-              <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
+              <motion.div
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
+              >
                 <Button
                   type="submit"
                   className="w-full py-3 bg-[#2563eb] text-white font-semibold rounded-lg shadow-md hover:bg-[#1d4ed8] transition duration-300"
