@@ -62,8 +62,6 @@ const ProductDetails = () => {
             className="rounded-xl w-full"
           />
         </div>
-
-        {/* Details */}
         <div>
           <p className="text-green-400 uppercase">
             {product.categoryName}
